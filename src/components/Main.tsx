@@ -47,7 +47,7 @@ interface State {
   displayComponentImg: boolean
 }
 
-function capitalizeFirstLetter (text: string) {
+function capitalizeFirstLetter(text: string) {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
@@ -68,31 +68,31 @@ export class Main extends React.Component<Props, State> {
   private canvasRef: HTMLCanvasElement | null = null
   private optionContext: OptionContext = new OptionContext(allOptions)
 
-  getChildContext () {
+  getChildContext() {
     return { optionContext: this.optionContext }
   }
 
-  componentWillReceiveProps (nextProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     this.updateOptionContext(nextProps)
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.optionContext.addValueChangeListener(this.onOptionValueChange)
     this.updateOptionContext(this.props)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const anyWindow = window as any
     setTimeout(() => {
       anyWindow.prerenderReady = true
     }, 500)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.optionContext.removeValueChangeListener(this.onOptionValueChange)
   }
 
-  render () {
+  render() {
     const { avatarStyle } = this.props
     const { displayComponentCode, displayComponentImg } = this.state
     const title = 'Avataaars Generator - Generate your own avataaars!'
@@ -172,7 +172,7 @@ export class Main extends React.Component<Props, State> {
     updateHandler(value)
   }
 
-  private updateOptionContext (nextProps: Props) {
+  private updateOptionContext(nextProps: Props) {
     this.optionContext.setData(nextProps as any)
   }
 
@@ -203,6 +203,9 @@ export class Main extends React.Component<Props, State> {
       }
       values[option.key] = sample(optionState.options)!
     }
+
+    values["facialHairColor"] = values["hairColor"]
+
     this.optionContext.setData(values)
     this.props.onChangeUrlQueryParams!(values, UrlUpdateTypes.push)
   }
@@ -241,7 +244,7 @@ export class Main extends React.Component<Props, State> {
     this.triggerDownload(svg, 'avataaars.svg')
   }
 
-  private triggerDownload (imageBlob: Blob, fileName: string) {
+  private triggerDownload(imageBlob: Blob, fileName: string) {
     FileSaver.saveAs(imageBlob, fileName)
   }
 
